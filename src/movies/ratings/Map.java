@@ -18,8 +18,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  */
 public class Map extends Mapper<Object, Text, IntWritable, Text> {
 	
-	private final IntWritable one = new IntWritable(1);
-	private IntWritable movieId = new IntWritable();
+	private IntWritable userId = new IntWritable();
 	
 	/**
 	 * @throws InterruptedException
@@ -33,22 +32,34 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 		FileSplit fileSplit = (FileSplit)context.getInputSplit();
 		String fileName = fileSplit.getPath().getName();
 		String str[] = value.toString().split(",");
+		//TODO Check the below code and confirm that logic is correct
 		if(fileName.equals("ratings.csv")){
-			
 			if(str.length!=4){
 				System.out.println("Unwanted data in ratings.csv");
 			}
 			else{
 				try{
-					movieId.set(Integer.parseInt(str[0]));
-					context.write(movieId, one);
+					userId.set(Integer.parseInt(str[0]));
+					context.write(userId,
+							new Text(str[1]
+							+ "," + str[2]));
 				}catch (NumberFormatException e) {
 					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
 				}
 			}
 		}
 		else{
-			
+			if(str.length!=2){
+				System.out.println("Unwanted data in Valid Users list");
+			}
+			else{
+				try{
+					userId.set(Integer.parseInt(str[0]));
+					context.write(userId, new Text("$$VALID$$"));
+				}catch(NumberFormatException e){
+					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
+				}
+			}
 		}
 	}
 }
