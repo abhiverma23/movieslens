@@ -40,7 +40,7 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
                 s = s[s.length-1].split("\\)");
                 try{
                     int year = Integer.parseInt(s[0]);
-                    if(year>=2015) {
+                    if(year>=2011) {
                         one.set(year);
                         context.write(movieId, one);
                     }
