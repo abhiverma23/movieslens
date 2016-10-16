@@ -9,4 +9,6 @@ validUserRating = JOIN validUser BY uId LEFT OUTER, moviesRatings BY uId;
 --validUserRating format validUser.uId, validUserRating.mId, validUser.uRated, validUserRating.uId,
 -- validUserRating.ratings, validUserRating.timestamp
 groupData = GROUP validUserRating BY moviesRatings.mId;
-Illustrate groupData;
+STORE validUserRating INTO 'myoutput/PIGOUTTEMP001';
+DESCRIBE validUserRating;
+--Illustrate groupData;
