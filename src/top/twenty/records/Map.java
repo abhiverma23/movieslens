@@ -9,6 +9,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.TreeMap;
 
 /**
  * @author Abhishek Verma
@@ -17,6 +18,7 @@ import java.io.IOException;
  */
 public class Map extends Mapper<Object, Text, Text, IntWritable> {
 
+	private TreeMap<Double, Text> top20 = new TreeMap<Double, Text>();
 	private final IntWritable one = new IntWritable(1);
 	private IntWritable movieId = new IntWritable();
 	
@@ -34,11 +36,20 @@ public class Map extends Mapper<Object, Text, Text, IntWritable> {
 		}
 		else{
 			try{
-				movieId.set(Integer.parseInt(str[1]));
-				context.write(movieId, one);
+				double d = Double.parseDouble(str[1]);
+				top20.put(d,value);
+				if(top20.size()>10) top20.remove(top20.firstKey());
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper movieId => \"" + str[1] + "\"");
 			}
+		}
+	}
+	@Override
+	protected void cleanup(Context context)
+			throws IOException, InterruptedException {
+
+		for ( Text moviesRating : top20.values() ) {
+			context.write(moviesRating, null);
 		}
 	}
 }
