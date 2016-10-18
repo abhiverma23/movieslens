@@ -5,10 +5,10 @@
  */
 package top.twenty.records;
 
-import most.viewed.movies.Com;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -45,17 +45,18 @@ public class Driver {
 
 		Job job = new Job(conf, "Most Viewed Movies");
 
+		job.setNumReduceTasks(0);
 		job.setJarByClass(Driver.class);
 		job.setMapperClass(Map.class);
-		job.setCombinerClass(Com.class);
-		job.setReducerClass(Red.class);
+		//job.setCombinerClass(Red.class);
+		//job.setReducerClass(Red.class);
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(NullWritable.class);
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-		System.exit(job.waitForCompletion(false) ? 0 : 1);
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }

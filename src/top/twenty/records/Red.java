@@ -5,6 +5,7 @@
 package top.twenty.records;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -15,7 +16,7 @@ import java.util.TreeMap;
  * @author Abhishek Verma
  * @email abhishekverma3210@gmail.com
  */
-public class Red extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class Red extends Reducer<Text, IntWritable, Text, NullWritable> {
 	/**
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -39,7 +40,7 @@ public class Red extends Reducer<Text, IntWritable, Text, IntWritable> {
 			throws IOException, InterruptedException {
 
 		for ( Text moviesRating : top20.values() ) {
-			context.write(moviesRating, null);
+			context.write(moviesRating, NullWritable.get());
 		}
 	}
 }
