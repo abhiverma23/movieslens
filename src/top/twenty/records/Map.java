@@ -11,6 +11,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 import java.util.TreeMap;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author Abhishek Verma
@@ -19,7 +21,7 @@ import java.util.TreeMap;
  */
 public class Map extends Mapper<Object, Text, Text, NullWritable> {
 
-	private TreeMap<Text, Double> top20 = new TreeMap<Text, Double>();
+	private HashMap<Text, Double> top20 = new HashMap<Text, Double>();
 	private final IntWritable one = new IntWritable(1);
 	private IntWritable movieId = new IntWritable();
 	
@@ -38,13 +40,26 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 			try{
 				double d = Double.parseDouble(str[1]);
 				top20.put(value,d);
-				System.out.println("Curent Values : " + d + " - " + value.toString() + "\n Size : " + top20.size());
+				//System.out.println("Curent Values : " + d + " - " + value.toString() + "\n Size : " + top20.size());
 				if(top20.size()>10)
 				{
-					System.out.println("Removing Line : " + top20.firstKey());
-					top20.remove(top20.firstKey());
+					Set<Entry<Text, Double>> set = top20.entrySet();
+					List<Entry<Text, Double>> list = new ArrayList<Entry<Text, Double>>(
+							set);
+					Collections.sort(list, new Comparator<Entry<Text, Double>>() {
+						public int compare(Entry<Text, Double> o1,
+										   Entry<Text, Double> o2) {
+							return o2.getValue().compareTo(o1.getValue());
+						}
+					});
+					/*System.out.println("Removing Line : " + top20.firstKey());*/
+					list.remove(10);
+
+					top20 = new HashMap<Text, Double>();
+					for (Entry<Text, Double> j : list)
+						top20.put(j.getKey(),j.getValue());
 				}
-				System.out.println("Remaning records : " + top20);
+				/*System.out.println("Remaning records : " + top20);*/
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper movieId => \"" + str[1] + "\"");
 			}
@@ -54,8 +69,16 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 	protected void cleanup(Context context)
 			throws IOException, InterruptedException {
 
-		for ( Text moviesRating : top20.keySet() ) {
-			context.write(moviesRating, NullWritable.get());
-		}
+		Set<Entry<Text, Double>> set = top20.entrySet();
+		List<Entry<Text, Double>> list = new ArrayList<Entry<Text, Double>>(
+				set);
+		Collections.sort(list, new Comparator<Entry<Text, Double>>() {
+			public int compare(Entry<Text, Double> o1,
+							   Entry<Text, Double> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
+		});
+		for (Entry<Text, Double> j : list)
+			context.write(j.getKey(),NullWritable.get());
 	}
 }
