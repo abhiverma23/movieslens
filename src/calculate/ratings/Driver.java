@@ -3,9 +3,7 @@
  * @email abhishekverma3210@gmail.com
  * @version 0.0.0
  */
-package movies.ratings;
-
-import java.io.IOException;
+package calculate.ratings;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -16,6 +14,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+import java.io.IOException;
 
 /**
  * 
@@ -38,18 +38,18 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---Filter rating given by valid users---");
+		System.out.println("---Calculate rating given by valid users---");
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Filter Ratings");
+		Job job = new Job(conf, "Average Ratings");
 		
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);
 		
 		job.setMapperClass(Map.class);
 		//job.setCombinerClass(Com.class);
-		job.setReducerClass(Com.class);
+		job.setReducerClass(Red.class);
 		
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);

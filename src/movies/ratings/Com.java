@@ -22,12 +22,14 @@ public class Com extends Reducer<IntWritable, Text, IntWritable, Text> {
 	@Override
 	protected void reduce(IntWritable arg0, Iterable<Text> arg1,
 			Context arg2) throws IOException, InterruptedException {
+		//userId	[movieId,rating][movieId,rating][$$VALID$$][movieId,rating] ...
 		System.out.println("Combiner Code is beeing Executed");
 		boolean isValidUser=false;
 		String str="";
 		for(Text t:arg1){
 			if(t.toString().equals("$$VALID$$"))isValidUser=true;
 			else{
+				//movieId,rating:movieId,rating ...
 				str+=t.toString()+":";
 			}
 		}
@@ -38,6 +40,7 @@ public class Com extends Reducer<IntWritable, Text, IntWritable, Text> {
 			for(int i = 0 ; i < st.length; i++){
 				s = st[i].split(",");
 				if(s.length==2){
+					//movieId	rating
 					arg2.write( new IntWritable(Integer.parseInt(s[0])), new Text(s[1]));
 				}
 			}

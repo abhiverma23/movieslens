@@ -42,7 +42,7 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 					userId.set(Integer.parseInt(str[0]));
 					context.write(userId,
 							new Text(str[1]
-							+ "," + str[2]));
+							+ "," + str[2]));//userId	movieId,rating
 				}catch (NumberFormatException e) {
 					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
 				}
@@ -55,7 +55,7 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			else{
 				try{
 					userId.set(Integer.parseInt(str[0]));
-					context.write(userId, new Text("$$VALID$$"));
+					context.write(userId, new Text("$$VALID$$"));//userId	$$VALID$$
 				}catch(NumberFormatException e){
 					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
 				}
