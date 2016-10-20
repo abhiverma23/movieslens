@@ -32,6 +32,6 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			System.out.println("Unwanted data in validMoviesRating file");
 		}
 		//movieId	rating,1
-		context.write(new IntWritable(Integer.parseInt(row[0])),new Text(row[1]+",1"));
+		context.write(new IntWritable(Integer.parseInt(row[0])),new Text(row[1].toString()+",1"));
 	}
 }
