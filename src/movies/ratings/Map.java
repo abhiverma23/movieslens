@@ -9,7 +9,6 @@ import java.io.IOException;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 /**
  * @author Abhishek Verma
@@ -17,9 +16,9 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  *
  */
 public class Map extends Mapper<Object, Text, IntWritable, Text> {
-	
-	private IntWritable userId = new IntWritable();
-	
+
+	private IntWritable movieId = new IntWritable();
+
 	/**
 	 * @throws InterruptedException
 	 * @throws IOException
@@ -27,39 +26,29 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 	@Override
 	protected void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
-		// ratings.csv format userId,movieId,rating,timestamp
-		 	
-		FileSplit fileSplit = (FileSplit)context.getInputSplit();
-		String fileName = fileSplit.getPath().getName();
-		String str[] = value.toString().split(",");
+		// File1[MostViewedMovies] format : moviesId	timesViewed
+		// File2[movies.csv] format : movieId,title,genres
+		String str1[] = value.toString().split("\t");//Length = 2
+		String str[] = value.toString().split(",");//Length = 3
 		//TODO Check the below code and confirm that logic is correct
-		if(fileName.equals("ratings.csv")){
-			if(str.length!=4){
-				System.out.println("Unwanted data in ratings.csv");
+		if(str1.length==2){
+			try{
+				movieId.set(Integer.parseInt(str1[0]));
+				context.write(movieId,new Text(str1[1]+",$$VALID$$"));//movieId	timesViewed,$$VALID$$
+			}catch (NumberFormatException e) {
+				System.out.println("Found Improper movieId in movies.csv file => \"" + str1[0] + "\"");
 			}
-			else{
-				try{
-					userId.set(Integer.parseInt(str[0]));
-					context.write(userId,
-							new Text(str[1]
-							+ "," + str[2]));//userId	movieId,rating
-				}catch (NumberFormatException e) {
-					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
-				}
+		}
+		else if(str.length==3){
+			try{
+				movieId.set(Integer.parseInt(str[0]));
+				context.write(movieId, new Text(str[1]));//movieId	title
+			}catch(NumberFormatException e){
+				System.out.println("Found Improper movieId MostViewedMovies file => \"" + str[0] + "\"");
 			}
 		}
 		else{
-			if(str.length!=2){
-				System.out.println("Unwanted data in Valid Users list");
-			}
-			else{
-				try{
-					userId.set(Integer.parseInt(str[0]));
-					context.write(userId, new Text("$$VALID$$"));//userId	$$VALID$$
-				}catch(NumberFormatException e){
-					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
-				}
-			}
+			System.out.println("Not a valid Record  => "+value.toString());
 		}
 	}
 }

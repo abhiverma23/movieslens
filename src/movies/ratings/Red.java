@@ -7,6 +7,7 @@ package movies.ratings;
 import java.io.IOException;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -14,7 +15,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  * @author Abhishek Verma
  * @email abhishekverma3210@gmail.com
  */
-public class Com extends Reducer<IntWritable, Text, IntWritable, Text> {
+public class Red extends Reducer<IntWritable, Text, IntWritable, Text> {
 	/**
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -22,28 +23,25 @@ public class Com extends Reducer<IntWritable, Text, IntWritable, Text> {
 	@Override
 	protected void reduce(IntWritable arg0, Iterable<Text> arg1,
 			Context arg2) throws IOException, InterruptedException {
-		//userId	[movieId,rating][movieId,rating][$$VALID$$][movieId,rating] ...
-		System.out.println("Combiner Code is beeing Executed");
+		//userId	[timesViewed,$$VALID$$][title]
 		boolean isValidUser=false;
 		String str="";
+		String st="";
 		for(Text t:arg1){
-			if(t.toString().equals("$$VALID$$"))isValidUser=true;
+			String[] s = t.toString().split(",");
+			if(s.length==2){
+				if (s[1].equals("$$VALID$$")) {
+					isValidUser = true;
+					st=s[0];
+				}
+			}
 			else{
-				//movieId,rating:movieId,rating ...
-				str+=t.toString()+":";
+				str=t.toString();
 			}
 		}
 		//TODO Check the below code and confirm that logic is correct
-		String st[] = str.split(":");
-		String s[];
 		if(isValidUser){
-			for(int i = 0 ; i < st.length; i++){
-				s = st[i].split(",");
-				if(s.length==2){
-					//movieId	rating
-					arg2.write( new IntWritable(Integer.parseInt(s[0])), new Text(s[1]));
-				}
-			}
+			arg2.write( null, new Text(str+"\t"+arg0.toString()));
 		}
 	}
 }

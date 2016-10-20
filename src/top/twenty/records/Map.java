@@ -32,15 +32,16 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 	@Override
 	protected void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
+		//movieId	timesViewed
 		String str[] = value.toString().split("\t");
 		if(str.length!=2){
-			System.out.println("Unwanted data in ratings.csv");
+			System.out.println("Unwanted data in output of \"MovieId	TimesViewed\" patter file");
 		}
 		else{
 			try{
 				double d = Double.parseDouble(str[1]);
 				top20.put(value.toString(),d);
-				System.out.println("Curent Values : " + d + " - " + value.toString() + "\n Size : " + top20.size());
+				//System.out.println("Curent Values : " + d + " - " + value.toString() + "\n Size : " + top20.size());
 				if(top20.size()>10)
 				{
 					Set<Entry<String, Double>> set = top20.entrySet();
@@ -60,14 +61,14 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 					int i = 0;
 					for (Entry<String, Double> j : list)
 						if(i++<10) {
-						System.out.println("After Removing : " + j.getKey() + j.getValue());
+						//System.out.println("After Removing : " + j.getKey() + j.getValue());
 							top20.put(j.getKey(), j.getValue());
 						}
 				}
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper movieId => \"" + str[1] + "\"");
 			}
-			System.out.println("Remaning records : " + top20);
+			//System.out.println("Remaning records : " + top20);
 		}
 	}
 	@Override
