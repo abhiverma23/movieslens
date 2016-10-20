@@ -22,7 +22,7 @@ public class Com extends Reducer<IntWritable, Text, IntWritable, Text> {
 	@Override
 	protected void reduce(IntWritable arg0, Iterable<Text> arg1,
 			Context arg2) throws IOException, InterruptedException {
-		System.out.println("Reducer Code is beeing Executed");
+		System.out.println("Reducer Code is being Executed");
 		boolean isValidUser=false;
 		String str="";
 		for(Text t:arg1){
