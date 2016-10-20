@@ -36,21 +36,26 @@ public class Driver {
 					" <INPUTFILE> <OUTPUTDIRECTORY> {ENTER}");
 			System.exit(2);
 		}
-
+		System.out.println("---WELCOME TO TOP 10 CRITICS MOVIES---");
 		System.out.println("---Getting User Given 40+ Ratings---");
 
 		Configuration conf = new Configuration();
 
 		Job job = new Job(conf, "User 40+ Ratings");
 
+		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);
+
 		job.setMapperClass(Map.class);
 		job.setCombinerClass(Com.class);
 		job.setReducerClass(Red.class);
+
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
+
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(IntWritable.class);
+
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

@@ -25,7 +25,6 @@ public class Com extends Reducer<IntWritable, IntWritable, IntWritable, IntWrita
 		for(IntWritable v : arg1){
 			sum+=v.get();
 		}
-		if(sum>=40)
-			arg2.write(arg0, new IntWritable(sum));
+		arg2.write(arg0, new IntWritable(sum));
 	}
 }

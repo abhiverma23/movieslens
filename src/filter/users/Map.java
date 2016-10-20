@@ -19,7 +19,7 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
 	
 	
 	private final IntWritable one = new IntWritable(1);
-	private IntWritable movieId = new IntWritable();
+	private IntWritable userId = new IntWritable();
 	
 	/**
 	 * @throws InterruptedException
@@ -28,15 +28,15 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
 	@Override
 	protected void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
-		// ratings.csv format userId,movieId,rating,timestamp
+		// ratings.csv format userId,userId,rating,timestamp
 		String str[] = value.toString().split(",");
 		if(str.length!=4){
 			System.out.println("Unwanted data in ratings.csv");
 		}
 		else{
 			try{
-				movieId.set(Integer.parseInt(str[0]));
-				context.write(movieId, one);
+				userId.set(Integer.parseInt(str[0]));
+				context.write(userId, one);
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper userId => \"" + str[0] + "\"");
 			}
