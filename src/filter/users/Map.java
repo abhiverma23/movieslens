@@ -35,10 +35,10 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
 		}
 		else{
 			try{
-				movieId.set(Integer.parseInt(str[0]));
+				movieId.set(Integer.parseInt(str[1]));
 				context.write(movieId, one);
 			}catch (NumberFormatException e) {
-				System.out.println("Found Improper userId => \"" + str[0] + "\"");
+				System.out.println("Found Improper movieId => \"" + str[1] + "\"");
 			}
 		}
 	}

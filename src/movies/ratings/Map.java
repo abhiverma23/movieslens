@@ -18,7 +18,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  */
 public class Map extends Mapper<Object, Text, IntWritable, Text> {
 	
-	private IntWritable userId = new IntWritable();
+	private IntWritable movieId = new IntWritable();
 	
 	/**
 	 * @throws InterruptedException
@@ -27,8 +27,8 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 	@Override
 	protected void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
-		// ratings.csv format userId,movieId,rating,timestamp
-		 	
+		// ratings.csv format movieId,movieId,rating,timestamp Length 4
+		// moviesId timesViewed : format 	
 		FileSplit fileSplit = (FileSplit)context.getInputSplit();
 		String fileName = fileSplit.getPath().getName();
 		String str[] = value.toString().split(",");
@@ -38,10 +38,9 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			}
 			else{
 				try{
-					userId.set(Integer.parseInt(str[0]));
-					context.write(userId,
-							new Text(str[1]
-							+ "," + str[2]));
+					movieId.set(Integer.parseInt(str[1]));
+					context.write(movieId,
+							new Text(str[2]));//movieId		ratings
 				}catch (NumberFormatException e) {
 					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
 				}
@@ -53,8 +52,8 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			}
 			else{
 				try{
-					userId.set(Integer.parseInt(str[0]));
-					context.write(userId, new Text("$$VALID$$"));
+					movieId.set(Integer.parseInt(str[0]));
+					context.write(movieId, new Text("$$VALID$$"));//movieId		$$VALID$$
 				}catch(NumberFormatException e){
 					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
 				}
