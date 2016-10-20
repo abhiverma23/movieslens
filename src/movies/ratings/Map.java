@@ -32,6 +32,7 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 		FileSplit fileSplit = (FileSplit)context.getInputSplit();
 		String fileName = fileSplit.getPath().getName();
 		String str[] = value.toString().split(",");
+		String str1[] = value.toString().split("\t");
 		if(fileName.equals("ratings.csv")){
 			if(str.length!=4){
 				System.out.println("Unwanted data in ratings.csv");
@@ -47,15 +48,15 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			}
 		}
 		else{
-			if(str.length!=2){
+			if(str1.length!=2){
 				System.out.println("Unwanted data in Valid Users list");
 			}
 			else{
 				try{
-					movieId.set(Integer.parseInt(str[0]));
+					movieId.set(Integer.parseInt(str1[0]));
 					context.write(movieId, new Text("$$VALID$$"));//movieId		$$VALID$$
 				}catch(NumberFormatException e){
-					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
+					System.out.println("Found Improper movieId => \"" + str1[0] + "\"");
 				}
 			}
 		}
