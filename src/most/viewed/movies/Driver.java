@@ -37,7 +37,7 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---WELCOME TO MOST VIEWD MOVIES---");
+		System.out.println("---WELCOME TO MOST VIEWED MOVIES---");
 
 		Configuration conf = new Configuration();
 
@@ -47,10 +47,13 @@ public class Driver {
 		job.setMapperClass(Map.class);
 		job.setCombinerClass(Com.class);
 		job.setReducerClass(Red.class);
+
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
+
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(IntWritable.class);
+
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

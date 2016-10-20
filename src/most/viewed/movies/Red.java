@@ -25,6 +25,7 @@ public class Red extends Reducer<IntWritable, IntWritable, IntWritable, IntWrita
 		for(IntWritable v : arg1){
 			sum+=v.get();
 		}
+		//movieId	timesViewed
 		arg2.write(arg0, new IntWritable(sum));
 	}
 }

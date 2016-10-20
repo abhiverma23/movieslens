@@ -36,6 +36,7 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
 		else{
 			try{
 				movieId.set(Integer.parseInt(str[1]));
+				//movieId	1
 				context.write(movieId, one);
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper movieId => \"" + str[1] + "\"");
