@@ -39,7 +39,7 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---WELCOME TO TOP CRITICS MOVIES---");
+		System.out.println("---Top 10---");
 
 		Configuration conf = new Configuration();
 

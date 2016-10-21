@@ -38,11 +38,11 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---Filter rating given by valid users---");
+		System.out.println("---Filter rating given by valid movies of last five years---");
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Filter Ratings : Phase 2");
+		Job job = new Job(conf, "Ratings of Movies in Last Five Years : Phase 2");
 		
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);

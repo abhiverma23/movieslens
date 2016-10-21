@@ -42,7 +42,7 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
                     int year = Integer.parseInt(s[0]);
                     if(year>=2011) {
                         one.set(year);
-                        context.write(movieId, one);
+                        context.write(movieId, one);//MovieId	year
                     }
                 }catch (NumberFormatException e) {
                     System.out.println("No number found in End of string with MovieID inside parentheses "

@@ -29,9 +29,10 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 
 		String[] row = value.toString().split("\t");
 		if(row.length!=2){
-			System.out.println("Unwanted data in validMoviesRating file");
+			System.out.println("Unwanted data in validMoviesRating file => " + value.toString());
 		}
 		//movieId	rating,1
+		else
 		context.write(new IntWritable(Integer.parseInt(row[0])),new Text(row[1].toString()+",1"));
 	}
 }

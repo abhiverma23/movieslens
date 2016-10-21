@@ -41,16 +41,17 @@ public class Driver {
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Most Viewed Movies Last 5 Year");
-
-		job.setNumReduceTasks(0);
+		Job job = new Job(conf, "Most Viewed Movies Last 5 Year : Phase 1");
 
 		job.setJarByClass(Driver.class);
 		job.setMapperClass(Map.class);
+
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
+
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(IntWritable.class);
+
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

@@ -38,17 +38,16 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---Calculate rating given by valid users---");
+		System.out.println("---Calculate rating of last five year movies---");
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Top Critics Average Ratings : Phase 3");
+		Job job = new Job(conf, "Top 10 Last Five Year Moveis : Phase 3");
 		
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);
 		
 		job.setMapperClass(Map.class);
-		//job.setCombinerClass(Com.class);
 		job.setReducerClass(Red.class);
 		
 		job.setInputFormatClass(TextInputFormat.class);
