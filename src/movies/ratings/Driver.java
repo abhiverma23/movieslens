@@ -42,13 +42,12 @@ public class Driver {
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Filter Ratings");
+		Job job = new Job(conf, "Filter Ratings : Phase 2");
 		
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);
 		
 		job.setMapperClass(Map.class);
-		//job.setCombinerClass(Com.class);
 		job.setReducerClass(Com.class);
 		
 		job.setInputFormatClass(TextInputFormat.class);

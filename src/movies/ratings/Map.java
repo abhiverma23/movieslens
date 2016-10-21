@@ -28,10 +28,11 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 	protected void map(Object key, Text value, Context context)
 			throws IOException, InterruptedException {
 		// ratings.csv format userId,movieId,rating,timestamp
-		 	
+		// Valid User format : userId	timesRated
 		FileSplit fileSplit = (FileSplit)context.getInputSplit();
 		String fileName = fileSplit.getPath().getName();
 		String str[] = value.toString().split(",");
+		String str1[] = value.toString().split("\t");
 		//TODO Check the below code and confirm that logic is correct
 		if(fileName.equals("ratings.csv")){
 			if(str.length!=4){
@@ -49,15 +50,15 @@ public class Map extends Mapper<Object, Text, IntWritable, Text> {
 			}
 		}
 		else{
-			if(str.length!=2){
+			if(str1.length!=2){
 				System.out.println("Unwanted data in Valid Users list");
 			}
 			else{
 				try{
-					userId.set(Integer.parseInt(str[0]));
+					userId.set(Integer.parseInt(str1[0]));
 					context.write(userId, new Text("$$VALID$$"));//userId	$$VALID$$
 				}catch(NumberFormatException e){
-					System.out.println("Found Improper movieId => \"" + str[0] + "\"");
+					System.out.println("Found Improper movieId => \"" + str1[0] + "\"");
 				}
 			}
 		}

@@ -42,7 +42,7 @@ public class Driver {
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Average Ratings");
+		Job job = new Job(conf, "Top Critics Average Ratings : Phase 3");
 		
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);

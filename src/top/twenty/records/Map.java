@@ -49,7 +49,7 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 					Collections.sort(list, new Comparator<Entry<String, Double>>() {
 						public int compare(Entry<String, Double> o1,
 										   Entry<String, Double> o2) {
-							return o2.getValue().compareTo(o1.getValue());
+							return o1.getValue().compareTo(o2.getValue());
 						}
 					});
 					/*System.out.println("Removing Line : " + top20.firstKey());*/
@@ -80,7 +80,7 @@ public class Map extends Mapper<Object, Text, Text, NullWritable> {
 		Collections.sort(list, new Comparator<Entry<String, Double>>() {
 			public int compare(Entry<String, Double> o1,
 							   Entry<String, Double> o2) {
-				return o2.getValue().compareTo(o1.getValue());
+				return o1.getValue().compareTo(o2.getValue());
 			}
 		});
 		for (Entry<String, Double> j : list) {

@@ -39,21 +39,22 @@ public class Driver {
 			System.exit(2);
 		}
 
-		System.out.println("---WELCOME TO TOP RATED MOVIES---");
+		System.out.println("---WELCOME TO TOP CRITICS MOVIES---");
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "Most Viewed Movies");
+		Job job = new Job(conf, "Top 10 Critics Movies : Phase 4 [LAST]");
 
 		job.setNumReduceTasks(0);
 		job.setJarByClass(Driver.class);
 		job.setMapperClass(Map.class);
-		//job.setCombinerClass(Red.class);
-		//job.setReducerClass(Red.class);
+
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
+
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
+
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

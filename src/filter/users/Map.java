@@ -36,7 +36,7 @@ public class Map extends Mapper<Object, Text, IntWritable, IntWritable> {
 		else{
 			try{
 				userId.set(Integer.parseInt(str[0]));
-				context.write(userId, one);
+				context.write(userId, one);// userID	1
 			}catch (NumberFormatException e) {
 				System.out.println("Found Improper userId => \"" + str[0] + "\"");
 			}

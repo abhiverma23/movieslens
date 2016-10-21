@@ -41,7 +41,7 @@ public class Driver {
 
 		Configuration conf = new Configuration();
 
-		Job job = new Job(conf, "User 40+ Ratings");
+		Job job = new Job(conf, "User 40+ Ratings : Phase 1");
 
 		job.setNumReduceTasks(1);
 		job.setJarByClass(Driver.class);
